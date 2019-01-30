@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //routes
-app.use("/api", require('./routes/api/users'));
+app.use("/", require('./routes'));
 
 //sync database and start server
 db.sequelize.sync({ force: isDev }).then(function () {

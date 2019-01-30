@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
     var Order = sequelize.define("Order", {
-        orderNum: {
+        items: {
             type: DataTypes.STRING,
             allowNull: false
         },

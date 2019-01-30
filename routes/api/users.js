@@ -27,7 +27,7 @@ router.post("/user", (req, res) => {
                 error: error.message
             });
         });
-})
+});
 //READ
 router.get("/user/:email", (req, res) => {
     db.User
@@ -53,9 +53,9 @@ router.get("/user/:email", (req, res) => {
                 error: error.message
             });
         });
-})
+});
 //UPDATE
-router.put("/user/:id", (req, res) => {
+router.put("/user", (req, res) => {
     let user = {};
     if (req.query.email) {
         user.email = req.query.email.trim();
@@ -70,7 +70,7 @@ router.put("/user/:id", (req, res) => {
     db.User
         .update(user, {
             where: {
-                id: req.params.id
+                id: req.query.id
             }
         })
         .then((response) => {
@@ -107,7 +107,7 @@ router.delete("/user/:id", (req, res) => {
             });
         });
 });
-
+//login route
 router.post("/login", (req, res) => {
     const password = req.body.password;
     db.User
@@ -144,7 +144,7 @@ router.post("/login", (req, res) => {
                 error: error.message
             })
         })
-})
+});
 
 //helpers
 function getHash(password, salt) {

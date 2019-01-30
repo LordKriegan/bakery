@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes) {
         models.Item.hasMany(models.Order, {
             onDelete: "cascade"
         });
+        models.Item.belongsTo(models.Category, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
     };
 
     return Item;
