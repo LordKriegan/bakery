@@ -2,11 +2,16 @@ const router = require('express').Router();
 const db = require('../../models');
 
 //CREATE
-router.post("/category", (req, res) => {
-    db.Category
-        .create({
-            name: req.body.name
-        })
+router.post("/item", (req, res) => {
+    const newItem = {
+        picture: req.body.pic,
+        description: req.body.desc,
+        //price: req.body.chaching
+        price: req.body.price,
+        CategoryId: req.body.CategoryId
+    }
+    db.Item
+        .create(newItem)
         .then((response) => {
             res.json({
                 success: true,
@@ -22,16 +27,12 @@ router.post("/category", (req, res) => {
         });
 });
 //READ
-//find one
-router.get("/category/:id", (req, res) => {
-    db.Category
+router.get("/item/:id", (req, res) => {
+    db.Item
         .findOne({
             where: {
                 id: req.params.id
-            },
-            include: [{
-                model: db.Item
-            }]
+            }
         })
         .then((response) => {
             res.json({
@@ -47,38 +48,20 @@ router.get("/category/:id", (req, res) => {
             });
         });
 });
-//find all
-router.get("/category", (req, res) => {
-    const options = {};
-    if ((req.query.includeItems) && (req.query.includeItems === "true")) {
-        options.include = [{ model: db.Item }]
-    }
-    db.Category
-        .findAll(options)
-        .then((response) => {
-            res.json({
-                success: true,
-                data: response
-            });
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).json({
-                success: false,
-                message: error.message
-            });
-        });
-});
+
 //UPDATE
-router.put("/category", (req, res) => {
-    db.Category
-        .update({
-            name: req.query.name
-        }, {
-                where: {
-                    id: req.query.id
-                }
-            })
+router.put("/item", (req, res) => {
+    var newItem = {};
+    if (req.query.picture) newItem.picture = req.query.pic;
+    if (req.query.description) newItem.description = req.query.desc;
+    if (req.query.price) newItem.price = req.query.price;
+    if (req.query.CategoryId) newItem.CategoryId = req.query.CategoryId;
+    db.Item
+        .update(newItem, {
+            where: {
+                id: req.query.id
+            }
+        })
         .then((response) => {
             res.json({
                 success: true,
@@ -94,8 +77,8 @@ router.put("/category", (req, res) => {
         });
 });
 //DELETE
-router.delete("/category/:id", (req, res) => {
-    db.Category
+router.delete("/item/:id", (req, res) => {
+    db.Item
         .destroy({
             where: {
                 id: req.params.id
@@ -104,7 +87,7 @@ router.delete("/category/:id", (req, res) => {
         .then((response) => {
             res.json({
                 success: true
-            })
+            });
         })
         .catch((error) => {
             console.error(error);
@@ -112,6 +95,6 @@ router.delete("/category/:id", (req, res) => {
                 success: false,
                 message: error.message
             });
-        });
+        }); 
 });
 module.exports = router;
